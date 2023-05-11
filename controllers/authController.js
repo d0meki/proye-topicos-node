@@ -72,7 +72,7 @@ const verificarCI = async (req, res ) => {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         } else { // Si se encontró el usuario, devolver su nombre
             const user = querySnapshot.docs[0].data();
-            return res.json({ name: user.name,  });
+            return res.json({ name: user.name});
     }
 }
 const verificarFoto = (req = request, res = response) => {
