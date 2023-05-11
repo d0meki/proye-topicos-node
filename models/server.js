@@ -7,10 +7,10 @@ class Server {
         this.port = process.env.PORT;
         // this.luxandPath = '/api/luxand';
         this.chatgpt = '/api/chatgpt';
+        this.auth = '/api/auth'
         //Middlewares
         this.middlewares();
-        //ritas de mi aplicaion
-
+        //rutas
         this.routes();
     }
 
@@ -40,6 +40,7 @@ class Server {
 
     routes(){
         // this.app.use(this.luxandPath, require('../routes/luxand'));
+        this.app.use(this.auth,require('../routes/auth'));
         this.app.use(this.chatgpt, require('../routes/chatgpt'));
     }
 
