@@ -62,8 +62,18 @@ const register = async (req = request, res = response) => {
     })
 }
 
-const verificarCI = (req = request, res = response) => {
-    //TODO: hacer las pruebas para la conexion a firebase
+const verificarCI = async (req, res ) => {
+    //verificar el nro de ci de un usuario en la bd de firebase y luego mostrar el nombre de ese usuario
+    const { ci } = req.body; // Recuperar el número de cédula de identidad del cuerpo de la solicitud
+    const usersRef = db.collection('users');
+    const query = usersRef.where('ci', '==', ci).limit(1); // Buscar el usuario por su número de cédula de identidad
+    const querySnapshot = await query.get();
+        if (querySnapshot.empty) { // Si no se encontró el usuario, devolver un error 404
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        } else { // Si se encontró el usuario, devolver su nombre
+            const user = querySnapshot.docs[0].data();
+            return res.json({ name: user.name,  });
+    }
 }
 const verificarFoto = (req = request, res = response) => {
     //TODO: hacer las pruebas para la conexion a firebase
