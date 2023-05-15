@@ -85,7 +85,69 @@ const bloquearUsuario = (req = request, res = response) => {
     //TODO: hacer las pruebas para la conexion a firebase
 }
 
+const getUser = async (req, res) => {
+    const uid = "zhFiV0xrj5OAx3jbNy3e";
+    const documentSnapshot = await admin.firestore().collection("users").doc(uid).get();
+    res.json(documentSnapshot.data());
+}
 
+const getUserWithPin = async (req, res) => {
+    const pin = req.params.pin;
+    const querySnapshot = await admin.firestore().collection("users").where("pin", "==", pin).get();
+    if (querySnapshot.empty) {
+      res.status(404).send("User not found");
+    } else {
+      res.json(querySnapshot.docs[0].data());
+    }
+}
+
+const getUserWithUuid = async (req, res) => {
+    const uuid = req.params.uuid;
+    const querySnapshot = await admin.firestore().collection("users").where("uuid", "==", uuid).get();
+    if (querySnapshot.empty) {
+      res.status(404).send("User not found");
+    } else {
+      res.json(querySnapshot.docs[0].data());
+    }
+}
+
+const addUser = async (req, res) => {
+    const data = req.body;
+    try {
+      const docRef = await admin.firestore().collection("users").add(data);
+      res.json({
+        success: true,
+        id: docRef.id
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error adding user");
+    }
+}
+
+
+const storage = admin.storage();
+const bucket = storage.bucket();
+
+const uploadAvatarStorage = async (avatar, fileName) => {
+  try {
+    const file = bucket.file(`avatares/${fileName}`);
+    const options = {
+      metadata: {
+        contentType: avatar.mimetype,
+      },
+    };
+    await file.save(avatar.buffer, options);
+    const url = await file.getSignedUrl({
+      action: 'read',
+      expires: '03-09-2491' // Fecha en el futuro
+    });
+    return url;
+  } catch (error) {
+    console.error(error);
+    return "";
+  }
+}
 
 
 
