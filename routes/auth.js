@@ -1,12 +1,5 @@
 const  { Router } = require('express');
 const { login,registrarUsuario,verificarCi,verificarFoto,changePassword,signOut} = require('../controllers/authController');
-login,
-registrarUsuario,
-verificarCi,
-verificarFoto,
-changePassword,
-signOut
-
 
 const router = Router();
 

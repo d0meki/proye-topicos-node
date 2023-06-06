@@ -1,6 +1,7 @@
 const { response, request } = require('express')
 const { Configuration, OpenAIApi } = require('openai')
 
+
 const config = new Configuration({
     organization: "org-qDtjJ9iiKtsEWBVn9LtAnKur",
     apiKey: process.env.API_KEY_OPENIA
@@ -8,7 +9,7 @@ const config = new Configuration({
 
 const openia = new OpenAIApi(config)
 
-const pruebaChatGpt = async (req=request,res=response) => {
+const chatGptDavinci = async (req=request,res=response) => {
     const { pregunta } = req.body;
     const respuesta = await openia.createCompletion({
         "model": "text-davinci-003",
@@ -16,12 +17,29 @@ const pruebaChatGpt = async (req=request,res=response) => {
         "max_tokens": 2048,
         "temperature": 0.7
     })
-    // console.log(respuesta.data);
     res.json({
         msg:'post API - ChatGPT-Controlador',
         body: respuesta.data
     })
 }
+
+const chatGptTurbo = async (req=request,res=response) => {
+    const { pregunta } = req.body;
+    const completion = await openia.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [{role: "user", content: pregunta}],
+      });
+      const data = {
+        'prompt': pregunta,
+        'max_tokens': 100
+      };
+      res.json({
+        msg:'post API - ChatGPT-Controlador',
+        body: completion.data
+    })
+   
+}
+
 const getAlgo =  (req=request,res=response) =>{
     data = {
         name:'Freddy',
@@ -36,6 +54,7 @@ const getAlgo =  (req=request,res=response) =>{
 }
 
 module.exports = {
-    pruebaChatGpt,
+    chatGptDavinci,
+    chatGptTurbo,
     getAlgo
 }

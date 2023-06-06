@@ -2,8 +2,3 @@
 
 
 node_modules/
-.env
-routes/luxand.js
-controllers/luxandController.js
-controllers/chatBotController.js
-privateKey.json
