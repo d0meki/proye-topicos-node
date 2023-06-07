@@ -1,11 +1,11 @@
 const  { Router } = require('express');
-const { getPrueba,visionPrueba } = require('../controllers/googleVisionController');
+const { getPrueba,visionReconocerObjetos } = require('../controllers/googleVisionController');
 const router = Router();
 
 /* router.post('/',chatGptDavinci);
 router.post('/turbo',chatGptTurbo); */
 
 router.get('/get-prueba',getPrueba);
-router.post('/reconocer',visionPrueba);
+router.post('/reconocer',visionReconocerObjetos);
 
 module.exports = router;

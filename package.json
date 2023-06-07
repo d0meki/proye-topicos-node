@@ -19,5 +19,8 @@
     "fs": "^0.0.1-security",
     "openai": "^3.2.1",
     "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.2.14"
   }
 }

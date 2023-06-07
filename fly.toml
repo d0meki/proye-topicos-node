@@ -1,0 +1,19 @@
+# fly.toml app configuration file generated for proy-topic on 2023-06-06T10:27:50-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "proy-topic"
+primary_region = "scl"
+
+[env]
+PORT = "8080"
+API_KEY_OPENIA = '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'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+

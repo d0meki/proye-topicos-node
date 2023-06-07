@@ -1,14 +1,13 @@
 const { response, request } = require('express')
 // Imports the Google Cloud client libraries
 const vision = require('@google-cloud/vision');
-const fs = require('fs');
 // Creates a client
 const client = new vision.ImageAnnotatorClient({
     keyFilename: 'proy-topic.json'
 });
 // const { getPrueba,visionPrueba } = require('../public/images/');
 
-const visionPrueba = async (req = request, res = response) => {
+const visionReconocerObjetos = async (req = request, res = response) => {
     const { imageURL } = req.body;
     const respuesta = [];
     const [result] = await client.objectLocalization(imageURL);
@@ -41,5 +40,5 @@ const getPrueba = (req = request, res = response) => {
 
 module.exports = {
     getPrueba,
-    visionPrueba
+    visionReconocerObjetos
 }
