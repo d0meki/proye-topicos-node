@@ -8,7 +8,6 @@ primary_region = "scl"
 
 [env]
 PORT = "8080"
-API_KEY_OPENIA = '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'
 
 [http_service]
   internal_port = 8080
