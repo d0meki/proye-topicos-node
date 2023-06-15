@@ -9,6 +9,7 @@ class Server {
         this.chatgpt = '/api/chatgpt';
         this.vision = '/api/vision';
         this.auth = '/api/auth'
+        this.reclamos = '/api/reclamos'
         //Middlewares
         this.middlewares();
         //rutas
@@ -44,6 +45,7 @@ class Server {
         // this.app.use(this.auth,require('../routes/auth'));
         this.app.use(this.chatgpt, require('../routes/chatgpt'));
         this.app.use(this.vision, require('../routes/vision'));
+        this.app.use(this.reclamos, require('../routes/reclamos'));
     }
 
     listen (){

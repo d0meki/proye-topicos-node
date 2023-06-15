@@ -3,7 +3,7 @@ const { response, request } = require('express')
 const vision = require('@google-cloud/vision');
 // Creates a client
 const client = new vision.ImageAnnotatorClient({
-    keyFilename: 'proy-topic.json'
+    keyFilename: 'topic-vision.json'
 });
 // const { getPrueba,visionPrueba } = require('../public/images/');
 

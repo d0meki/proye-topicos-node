@@ -8,6 +8,7 @@ primary_region = "scl"
 
 [env]
 PORT = "8080"
+API_KEY_OPENIA = 
 
 [http_service]
   internal_port = 8080

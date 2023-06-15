@@ -3,4 +3,8 @@
 
 node_modules/
 .env
-fly.toml/
+Dockerfile
+fly.toml
+google-services.json
+privateKey.json
+topic-vision.json

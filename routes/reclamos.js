@@ -3,7 +3,7 @@ const { getReclamos,getReclamoPorFecha,getReclamoPorEstado,getReclamoPorCategori
 
 const router = Router();
 
-router.post('/reclamos',getReclamos);
+router.get('/reclamos',getReclamos);
 router.post('/reclamos-fecha',getReclamoPorFecha);
 router.post('/reclamos-estado',getReclamoPorEstado);
 router.post('/reclamos-categoria',getReclamoPorCategoria);
