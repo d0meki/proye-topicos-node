@@ -15,19 +15,38 @@ const  getReclamos = async (req, res) => {
     const snapshot = await reclamos.get();
     const listaReclamos = snapshot.docs.map((doc)=>doc.data())
     res.json({
-        msg:'post API - ChatGPT-Controlador',
+        msg:'get APi-reclamoController',
         body: listaReclamos
     })
 }
-
-async function getReclamoPorCategoria(req, res) {
-
+const  getReclamoPorCategoria = async (req, res) => {
+    const { categoria } = req.body;
+    const snapshot = await reclamos.where('categoria','==',categoria).get();
+    const listaReclamos = snapshot.docs.map((doc)=>doc.data())
+    res.json({
+        msg:'get APi-reclamoController',
+        body: listaReclamos
+    })
 }
-async function getReclamoPorEstado(req, res) {
-
+const  getReclamoPorEstado = async (req, res) => {
+    const { estado } = req.body;
+    const snapshot = await reclamos.where('estado','==',estado).get();
+    const listaReclamos = snapshot.docs.map((doc)=>doc.data())
+    res.json({
+        msg:'get APi-reclamoController',
+        body: listaReclamos
+    })
 }
-async function getReclamoPorFecha(req, res) {
-
+const  getReclamoPorFecha = async (req, res) => {
+    const { fechaIni,fechaFin } = req.body;
+    const ini = admin.firestore.Timestamp.fromDate(new Date(fechaIni))
+    const fin = admin.firestore.Timestamp.fromDate(new Date(fechaFin))
+    const snapshot = await reclamos.where('fecha','>=',ini).where('fecha','<=',fin).get();
+    const listaReclamos = snapshot.docs.map((doc)=>doc.data())
+    res.json({
+        msg:'get APi-reclamoController',
+        body: listaReclamos
+    })
 }
 module.exports = {
     getReclamos,

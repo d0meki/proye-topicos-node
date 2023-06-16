@@ -4,8 +4,8 @@ const { getReclamos,getReclamoPorFecha,getReclamoPorEstado,getReclamoPorCategori
 const router = Router();
 
 router.get('/reclamos',getReclamos);
-router.post('/reclamos-fecha',getReclamoPorFecha);
-router.post('/reclamos-estado',getReclamoPorEstado);
-router.post('/reclamos-categoria',getReclamoPorCategoria);
+router.get('/reclamos-fecha',getReclamoPorFecha);
+router.get('/reclamos-estado',getReclamoPorEstado);
+router.get('/reclamos-categoria',getReclamoPorCategoria);
 
 module.exports = router;
