@@ -10,6 +10,7 @@ class Server {
         this.vision = '/api/vision';
         this.auth = '/api/auth'
         this.reclamos = '/api/reclamos'
+        this.funcionarios = '/api/funcionarios'
         //Middlewares
         this.middlewares();
         //rutas
@@ -45,10 +46,11 @@ class Server {
 
     routes(){
         // this.app.use(this.luxandPath, require('../routes/luxand'));
-        // this.app.use(this.auth,require('../routes/auth'));
+        this.app.use(this.auth,require('../routes/auth'));
         this.app.use(this.chatgpt, require('../routes/chatgpt'));
         this.app.use(this.vision, require('../routes/vision'));
         this.app.use(this.reclamos, require('../routes/reclamos'));
+        this.app.use(this.funcionarios, require('../routes/funcionarios'));
     }
 
     listen (){

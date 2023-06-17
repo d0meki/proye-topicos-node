@@ -1,5 +1,5 @@
 const  { Router } = require('express');
-const { login,registrarUsuario,verificarCi,verificarFoto,changePassword,signOut} = require('../controllers/authController');
+const { login,registrarUsuario,verificarCi,verificarFoto,changePassword,signOut,getUserByUuid} = require('../controllers/authController');
 
 const router = Router();
 
@@ -9,5 +9,6 @@ router.post('/verificar-ci',verificarCi);
 router.post('/verificar-foto',verificarFoto);
 router.post('/change-password',changePassword);
 router.post('/logout',signOut);
+router.get('/usuario-uuid',getUserByUuid);
 
 module.exports = router;
