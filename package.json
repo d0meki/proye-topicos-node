@@ -19,7 +19,8 @@
     "firebase-admin": "^11.8.0",
     "fs": "^0.0.1-security",
     "openai": "^3.2.1",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "socket.io": "^4.6.2"
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.2.14"

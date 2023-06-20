@@ -16,16 +16,21 @@ const getFuncionario = async (req, res) => {
 const loginFuncionario = async (req, res) => {
     const { username, password } = req.body;
     const snapshot = await funcionarios.where('username', '==', username).where('password', '==', password).get();
-    const listfuncionarios = snapshot.docs.map((doc) => doc.data())
+    const listfuncionarios = snapshot.docs.map((doc) => user = {
+        id: doc.id,
+         info: doc.data()
+    })
     if (listfuncionarios.length == 0) {
         res.json({
             msg: 'post APi-funcionarioController',
-            status: false
+            status: false,
+            user: []
         })
     } else {
         res.json({
             msg: 'post APi-funcionarioController',
-            status: true
+            status: true,
+            user:listfuncionarios
         })
     }
 

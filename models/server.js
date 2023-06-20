@@ -1,10 +1,13 @@
 const express = require('express')
 const cors = require('cors')
+const Socket = require("./socket");
+const http = require("http");
 class Server {
 
     constructor(){
         this.app = express();
         this.port = process.env.PORT;
+        this.server = http.createServer(this.app);
         // this.luxandPath = '/api/luxand';
         this.chatgpt = '/api/chatgpt';
         this.vision = '/api/vision';
@@ -13,6 +16,8 @@ class Server {
         this.funcionarios = '/api/funcionarios'
         //Middlewares
         this.middlewares();
+        //socket
+        this.ServerSocket();
         //rutas
         this.routes();
     }
@@ -52,9 +57,12 @@ class Server {
         this.app.use(this.reclamos, require('../routes/reclamos'));
         this.app.use(this.funcionarios, require('../routes/funcionarios'));
     }
+    ServerSocket() {
+        new Socket(this.server)
+    }
 
     listen (){
-        this.app.listen( this.port, ()=>{
+        this.server.listen( this.port, ()=>{
             console.log('servidor corriendo en puerto',this.port);
         })
     }
