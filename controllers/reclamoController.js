@@ -1,55 +1,79 @@
 const { response, request } = require('express')
 const { admin } = require('../config/firebase-config')
+const nomailer = require('nodemailer')
 
 var db = admin.firestore();
 var reclamos = db.collection("reclamos");
 
+const enviarMail = async (req, res) => {
+    const { email, nota } = req.body;
+    // res.json({ email:email,nota:nota})
+    const config = {
+        host: 'smtp.gmail.com',
+        port: 587,
+        auth: {
+            user: 'domeki151190@gmail.com',
+            pass: 'opewurgspbwyaoyd'
+        }
+    }
+    const text = 'tu nota fue de: ' + nota;
+    const mensaje = {
+        from: 'domeki151190@gmail.com',
+        to: email,
+        subject: 'Tu Nota de Prueba',
+        text: text
+    }
+    const transport = nomailer.createTransport(config);
+    const info = await transport.sendMail(mensaje);
+    res.json(info)
+}
+
 
 const getReclamos = async (req, res) => {
-    const { area } = req.body;
-    const snapshot = await reclamos.where('area','==',area).orderBy('fecha', 'desc').get();
-    const listaReclamos = snapshot.docs.map((doc) => doc.data())
-    res.json({
-        msg: 'get APi-reclamoController',
-        body: listaReclamos
+    const area = req.params.area;
+    const snapshot = await reclamos.where('categoria', '==', area).orderBy('fecha', 'desc').get();
+    const listaReclamos = [];
+    snapshot.docs.map((doc) => {
+        const datos = doc.data();
+        const id = doc.id;
+        const reclamo = { id, ...datos };
+        listaReclamos.push(reclamo);
     })
+    res.json(listaReclamos)
+    // res.json(area)
 }
 const getReclamo = async (req, res) => {
-    const { documentId } = req.body;
-    const snapshot = await reclamos.doc(documentId).get();
-    res.json({
-        msg: 'get APi-reclamoController',
-        body: snapshot.data()
-    })
+    const id = req.params.id;
+    // const { documentId } = req.body;
+    const snapshot = await reclamos.doc(id).get();
+    res.json(snapshot.data());
 }
-const getReclamoPorCategoria = async (req, res) => {
-    const { categoria,area } = req.body;
-    const snapshot = await reclamos.where('categoria', '==', categoria).where('area','==',area).get();
-    const listaReclamos = snapshot.docs.map((doc) => doc.data())
-    res.json({
-        msg: 'get APi-reclamoController',
-        body: listaReclamos
-    })
-}
+
 const getReclamoPorEstado = async (req, res) => {
-    const { estado,area } = req.body;
-    const snapshot = await reclamos.where('estado', '==', estado).where('area','==',area).get();
-    const listaReclamos = snapshot.docs.map((doc) => doc.data())
-    res.json({
-        msg: 'get APi-reclamoController',
-        body: listaReclamos
+    const { estado, area } = req.body;
+    const snapshot = await reclamos.where('estado', '==', estado).where('categoria', '==', area).get();
+    const listaReclamos = [];
+    snapshot.docs.map((doc) => {
+        const datos = doc.data();
+        const id = doc.id;
+        const reclamo = { id, ...datos };
+        listaReclamos.push(reclamo);
     })
+    res.json(listaReclamos)
 }
 const getReclamoPorFecha = async (req, res) => {
     const { fechaIni, fechaFin, area } = req.body;
     const ini = admin.firestore.Timestamp.fromDate(new Date(fechaIni))
     const fin = admin.firestore.Timestamp.fromDate(new Date(fechaFin))
-    const snapshot = await reclamos.where('area','==',area).where('fecha', '>=', ini).where('fecha', '<=', fin).get();
-    const listaReclamos = snapshot.docs.map((doc) => doc.data())
-    res.json({
-        msg: 'get APi-reclamoController',
-        body: listaReclamos
+    const snapshot = await reclamos.where('categoria', '==', area).where('fecha', '>=', ini).where('fecha', '<=', fin).get();
+    const listaReclamos = [];
+    snapshot.docs.map((doc) => {
+        const datos = doc.data();
+        const id = doc.id;
+        const reclamo = { id, ...datos };
+        listaReclamos.push(reclamo);
     })
+    res.json(listaReclamos)
 }
 
 const cambiarEstado = async (req, res) => {
@@ -93,6 +117,15 @@ const cambiarArea = async (req, res) => {
         msg: 'update-success APi-reclamoController',
     })
 }
+const getReclamoPorCategoria = async (req, res) => {
+    const { categoria, area } = req.body;
+    const snapshot = await reclamos.where('categoria', '==', categoria).where('area', '==', area).get();
+    const listaReclamos = snapshot.docs.map((doc) => doc.data())
+    res.json({
+        msg: 'get APi-reclamoController',
+        body: listaReclamos
+    })
+}
 module.exports = {
     getReclamos,
     getReclamo,
@@ -100,5 +133,6 @@ module.exports = {
     getReclamoPorCategoria,
     getReclamoPorEstado,
     getReclamoPorFecha,
-    cambiarArea
+    cambiarArea,
+    enviarMail
 }

@@ -4,7 +4,7 @@ const Socket = require("./socket");
 const http = require("http");
 class Server {
 
-    constructor(){
+    constructor() {
         this.app = express();
         this.port = process.env.PORT;
         this.server = http.createServer(this.app);
@@ -22,15 +22,17 @@ class Server {
         this.routes();
     }
 
-    middlewares(){
+    middlewares() {
         //CORS
-         // this.app.use(cors())
+        // this.app.use(cors())
         const whiteList = ['http://localhost:4200',
-                            'https://astounding-chebakia-00722d.netlify.app',
-                            'http://localhost:80',
-                            'http://localhost'];
+            'https://astounding-chebakia-00722d.netlify.app',
+            'http://localhost:80',
+            'http://localhost', 'https://tecnoquizutepsa.000webhostapp.com',
+            'https://mi-first-web-domeki.000webhostapp.com/',
+            'http://127.0.0.1:5500'];
         this.app.use(cors({
-            origin : whiteList
+            origin: whiteList
         }))
         // const whiteList = ['http://localhost:4200'];
         // const corsOptions = {
@@ -46,12 +48,12 @@ class Server {
         this.app.use(express.json());
 
         //directorio publico
-        this.app.use( express.static('public'));
+        this.app.use(express.static('public'));
     }
 
-    routes(){
+    routes() {
         // this.app.use(this.luxandPath, require('../routes/luxand'));
-        this.app.use(this.auth,require('../routes/auth'));
+        this.app.use(this.auth, require('../routes/auth'));
         this.app.use(this.chatgpt, require('../routes/chatgpt'));
         this.app.use(this.vision, require('../routes/vision'));
         this.app.use(this.reclamos, require('../routes/reclamos'));
@@ -61,9 +63,9 @@ class Server {
         new Socket(this.server)
     }
 
-    listen (){
-        this.server.listen( this.port, ()=>{
-            console.log('servidor corriendo en puerto',this.port);
+    listen() {
+        this.server.listen(this.port, () => {
+            console.log('servidor corriendo en puerto', this.port);
         })
     }
 }
