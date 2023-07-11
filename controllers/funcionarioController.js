@@ -4,7 +4,6 @@ const { admin } = require('../config/firebase-config')
 var db = admin.firestore();
 var funcionarios = db.collection("funcionarios");
 
-
 const getFuncionario = async (req, res) => {
     const { documentId } = req.body;
     const snapshot = await funcionarios.doc(documentId).get();
@@ -12,6 +11,21 @@ const getFuncionario = async (req, res) => {
         msg: 'get APi-reclamoController',
         body: snapshot.data()
     })
+}
+const getFuncionarios = async (req, res) => {
+    try {
+        const snapshot = await funcionarios.get();
+        const listaFuncionarios = [];
+        snapshot.docs.map((doc) => {
+            const datos = doc.data();
+            const id = doc.id;
+            const funcionario = { id, ...datos };
+            listaFuncionarios.push(funcionario);
+        })
+        res.json(listaFuncionarios)
+    } catch (error) {
+        res.json({ error: error })
+    }
 }
 const loginFuncionario = async (req, res) => {
     const { username, password } = req.body;
@@ -35,6 +49,7 @@ const loginFuncionario = async (req, res) => {
     }
 
 }
+
 const addFuncionario = async (req, res) => {
     const resultado = await funcionarios.add(req.body);
     res.json({
@@ -43,8 +58,10 @@ const addFuncionario = async (req, res) => {
         idUser: resultado.id
     })
 }
+
 module.exports = {
     addFuncionario,
     loginFuncionario,
-    getFuncionario
+    getFuncionario,
+    getFuncionarios
 }

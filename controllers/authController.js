@@ -20,7 +20,7 @@ const  getUserByUuid = async (req, res) => {
 }
 
 async function login(req, res) {
- /*  const { email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     // INI VALIDACION EMAIL VERIFICADO
@@ -140,12 +140,12 @@ async function login(req, res) {
         return res.status(200).json(respuesta);
         // FIN SI EL PASSWORD ES INCORRECTO
       }
-    } */
+    }
   }
 
 
 async function registrarUsuario(req, res) {
- /*  const { usuario, imagenPath, fileName } = req.body;
+  const { usuario, imagenPath, fileName } = req.body;
   const name = Date.now() / 1000 + fileName;
   const avatar = fs.readFileSync(imagenPath);
 
@@ -209,10 +209,10 @@ async function registrarUsuario(req, res) {
       msg: error.code || error
     };
     return res.status(200).json(respuesta);
-  } */
+  }
 }
 async function verificarCi(req, res) {
-  /* const { ci } = req.body;
+  const { ci } = req.body;
 
   try {
     const documentSnapshotCi = await admin.firestore().collection('users').where('ci', '==', ci).get();
@@ -243,11 +243,11 @@ async function verificarCi(req, res) {
       uuid: 'none'
     };
     return res.status(200).json(resp);
-  } */
+  }
 }
 
 async function verificarFoto(req, res) {
-  /* const { image64, uuid } = req.body;
+  const { image64, uuid } = req.body;
   const baseUrl = 'https://api.luxand.cloud'; 
   const token = process.env.API_TOKEN; 
 
@@ -268,11 +268,11 @@ async function verificarFoto(req, res) {
     }
   } catch (error) {
     return res.status(200).json(false);
-  } */
+  }
 }
 
 async function changePassword(req, res) {
-  /* const { newPassword } = req.body;
+  const { newPassword } = req.body;
 
   try {
     const user = admin.auth().currentUser;
@@ -293,16 +293,16 @@ async function changePassword(req, res) {
       msg: `Error: ${error.code}`
     };
     return res.status(200).json(respuesta);
-  } */
+  }
 }
 
 async function signOut(req, res) {
- /*  try {
+  try {
     await admin.auth().signOut();
     return res.status(200).json(true);
   } catch (error) {
     return res.status(500).json(false);
-  } */
+  }
 }
 
 

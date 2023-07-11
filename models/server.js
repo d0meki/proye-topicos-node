@@ -14,6 +14,9 @@ class Server {
         this.auth = '/api/auth'
         this.reclamos = '/api/reclamos'
         this.funcionarios = '/api/funcionarios'
+        this.users = '/api/users'
+        this.categorias = '/api/categorias'
+        this.estados = '/api/estados'
         //Middlewares
         this.middlewares();
         //socket
@@ -28,23 +31,12 @@ class Server {
         const whiteList = ['http://localhost:4200',
             'https://astounding-chebakia-00722d.netlify.app',
             'http://localhost:80',
-            'http://localhost', 'https://tecnoquizutepsa.000webhostapp.com',
-            'https://mi-first-web-domeki.000webhostapp.com/',
+            'http://localhost',
+            'https://mi-first-web-domeki.000webhostapp.com',
             'http://127.0.0.1:5500'];
         this.app.use(cors({
             origin: whiteList
         }))
-        // const whiteList = ['http://localhost:4200'];
-        // const corsOptions = {
-        //     origin: function (origin, callback) {
-        //       if (whitelist.indexOf(origin) !== -1) {
-        //         callback(null, true)
-        //       } else {
-        //         callback(new Error('Not allowed by CORS'))
-        //       }
-        //     }
-        //   }
-        // lectura y parseo del body
         this.app.use(express.json());
 
         //directorio publico
@@ -58,11 +50,13 @@ class Server {
         this.app.use(this.vision, require('../routes/vision'));
         this.app.use(this.reclamos, require('../routes/reclamos'));
         this.app.use(this.funcionarios, require('../routes/funcionarios'));
+        this.app.use(this.users, require('../routes/user'));
+        this.app.use(this.categorias, require('../routes/categorias'));
+        this.app.use(this.estados, require('../routes/estados'));
     }
     ServerSocket() {
         new Socket(this.server)
     }
-
     listen() {
         this.server.listen(this.port, () => {
             console.log('servidor corriendo en puerto', this.port);

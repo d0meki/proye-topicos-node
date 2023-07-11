@@ -6,7 +6,8 @@ const { getReclamos,
     getReclamoPorCategoria,
     cambiarEstado,
     cambiarArea,
-    enviarMail
+    enviarMail,
+    cambiarComentario
     } = require('../controllers/reclamoController');
 const router = Router();
 
@@ -16,7 +17,11 @@ router.post('/reclamos-fecha', getReclamoPorFecha);
 router.post('/reclamos-estado', getReclamoPorEstado);
 router.get('/reclamos-categoria', getReclamoPorCategoria);
 router.post('/reclamos-update-estado-id', cambiarEstado);
+router.post('/reclamo-change-comentario', cambiarComentario);
 router.post('/reclamo-change-area', cambiarArea);
+
+
+
 router.post('/enviar-mail-dos', enviarMail);
 
 module.exports = router;

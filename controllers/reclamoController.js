@@ -42,7 +42,14 @@ const getReclamos = async (req, res) => {
     res.json(listaReclamos)
     // res.json(area)
 }
+
 const getReclamo = async (req, res) => {
+    const id = req.params.id;
+    // const { documentId } = req.body;
+    const snapshot = await reclamos.doc(id).get();
+    res.json(snapshot.data());
+}
+const getReclamoPara = async (req, res) => {
     const id = req.params.id;
     // const { documentId } = req.body;
     const snapshot = await reclamos.doc(id).get();
@@ -77,16 +84,17 @@ const getReclamoPorFecha = async (req, res) => {
 }
 
 const cambiarEstado = async (req, res) => {
-    const { nuevoEstado, documentId } = req.body;
+    const { nuevoEstado, documentId, phoneToken } = req.body;
     const data = {
         estado: nuevoEstado
     };
-    await reclamos.doc(documentId).update(data)
+     await reclamos.doc(documentId).update(data)
+    
     //NOTIFICACION QUE SE ENVIARÁ AL TELEFONO CUANDO SE CAMBIE DE ESTADO
-    /* const payload = {
+    const payload = {
         notification: {
-            title: 'titulo 1',
-            body: 'el estado a cambiado',
+            title: 'Notificacion SCZ',
+            body: 'El estado de su reclamo ha cambiado a: '+nuevoEstado,
             // image: image,
             //click_action: 'FLUTTER_NOTIFICATION_CLICK'
         },
@@ -97,15 +105,49 @@ const cambiarEstado = async (req, res) => {
         }
     };
     const options = { priority: 'high', timeToLive: 60 * 60 * 24, };
-    admin.messaging().sendToDevice('e1LP2Wu8RqmufI9wonVGO5:APA91bHwIpH3kfekyzPEgh_4oCKd0-01D-e1eXcNCmutjQcq_93lTGQ_BOLr85nLSjjZE6LJ-EBjR1JWK0HtKEi3oJCC4xITUGYsjUJ6F6fH0OLiXQ1npQ1i8-mVF7sRKu1237xYCMGe', payload, options).then(response => {
+    admin.messaging().sendToDevice(phoneToken, payload, options).then(response => {
         res.json({
             msg: 'Se recibio su notificacion',
+            status: true,
             response
         })
-    }); */
-    res.json({
+    });
+  /*   res.json({
         msg: 'update-success APi-reclamoController',
-    })
+    }) */
+}
+const cambiarComentario = async (req, res) => {
+    const { comentario, documentId, phoneToken } = req.body;
+    const data = {
+        comentario: comentario
+    };
+     await reclamos.doc(documentId).update(data)
+    
+    //NOTIFICACION QUE SE ENVIARÁ AL TELEFONO CUANDO SE CAMBIE DE ESTADO
+    const payload = {
+        notification: {
+            title: 'Notificacion SCZ',
+            body: 'Su reclamo ha sido comentado por un funcionario de ChannelSCZ'
+            // image: image,
+            //click_action: 'FLUTTER_NOTIFICATION_CLICK'
+        },
+        //image:image,
+        data: {
+            data1: 'data1 value',
+            data2: 'data2 value'
+        }
+    };
+    const options = { priority: 'high', timeToLive: 60 * 60 * 24, };
+    admin.messaging().sendToDevice(phoneToken, payload, options).then(response => {
+        res.json({
+            msg: 'Se recibio su notificacion',
+            status: true,
+            response
+        })
+    });
+  /*   res.json({
+        msg: 'update-success APi-reclamoController',
+    }) */
 }
 const cambiarArea = async (req, res) => {
     const { nuevaArea, documentId } = req.body;
@@ -134,5 +176,7 @@ module.exports = {
     getReclamoPorEstado,
     getReclamoPorFecha,
     cambiarArea,
-    enviarMail
+    enviarMail,
+    getReclamoPara,
+    cambiarComentario
 }
