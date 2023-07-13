@@ -34,7 +34,35 @@ const addEstado = async (req, res) => {
             res.json({ uid: "-1",msg:"La estado no se puedo crear: " + error,status:false })
         });
 }
+
+const editarEstado = async (req, res) => {
+    const { documentId,nuevoNombre, nuevaDescripcion } = req.body
+    const nuevoEstadoEditado= {
+        nombre: nuevoNombre,
+        descripcion: nuevaDescripcion
+    };
+    estados.doc(documentId).update(nuevoEstadoEditado)
+        .then((docRef) => {
+            res.json({ uid: docRef.id,msg:"Estado editado con exito",status:true })
+        })
+        .catch((error) => {
+            res.json({ uid: "-1",msg:"La estado no se puedo editar: " + error,status:false })
+        });
+}
+
+const eliminarEstado = async (req, res) => {
+    const { documentId} = req.body
+    estados.doc(documentId).delete()
+        .then((docRef) => {
+            res.json({ uid: docRef.id,msg:"Estado eliminado con exito",status:true })
+        })
+        .catch((error) => {
+            res.json({ uid: "-1",msg:"La estado no se puedo eliminar: " + error,status:false })
+        });
+}
 module.exports = {
     getEstados,
-    addEstado
+    addEstado,
+    editarEstado,
+    eliminarEstado
 }
