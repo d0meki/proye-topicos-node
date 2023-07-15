@@ -36,8 +36,37 @@ const addCategoria = async (req, res) => {
         });
 }
 
+const editarCategoria = async (req, res) => {
+    const { documentId,nuevoNombre, nuevaDescripcion } = req.body
+    const nuevoCategoriaEditado= {
+        nombre: nuevoNombre,
+        descripcion: nuevaDescripcion
+    };
 
+    console.log("nuevoNombre:", nuevoNombre);
+console.log("nuevaDescripcion:", nuevaDescripcion);
+    categorias.doc(documentId).update(nuevoCategoriaEditado)
+        .then((docRef) => {
+            res.json({ uid: docRef.id,msg:"categoria editada con exito",status:true })
+        })
+        .catch((error) => {
+            res.json({ uid: "-1",msg:"La categoria no se puedo editar: " + error,status:false })
+        });
+}
+
+const eliminarCategoria = async (req, res) => {
+    const { documentId} = req.body
+    categorias.doc(documentId).delete()
+        .then((docRef) => {
+            res.json({ uid: docRef.id,msg:"Categoria eliminado con exito",status:true })
+        })
+        .catch((error) => {
+            res.json({ uid: "-1",msg:"La categoria no se puedo eliminar: " + error,status:false })
+        });
+}
 module.exports = {
     getCategorias,
-    addCategoria
+    addCategoria,
+    editarCategoria,
+    eliminarCategoria
 }
