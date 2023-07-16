@@ -17,6 +17,7 @@ class Server {
         this.users = '/api/users'
         this.categorias = '/api/categorias'
         this.estados = '/api/estados'
+        this.areas = '/api/areas'
         //Middlewares
         this.middlewares();
         //socket
@@ -53,6 +54,7 @@ class Server {
         this.app.use(this.users, require('../routes/user'));
         this.app.use(this.categorias, require('../routes/categorias'));
         this.app.use(this.estados, require('../routes/estados'));
+        this.app.use(this.areas, require('../routes/areas'));
     }
     ServerSocket() {
         new Socket(this.server)
