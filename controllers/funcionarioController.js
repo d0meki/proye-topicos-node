@@ -49,7 +49,6 @@ const loginFuncionario = async (req, res) => {
     }
 
 }
-
 const addFuncionario = async (req, res) => {
     const resultado = await funcionarios.add(req.body);
     res.json({
@@ -58,10 +57,62 @@ const addFuncionario = async (req, res) => {
         idUser: resultado.id
     })
 }
+const addFuncionario1 = async (req, res) => {
+    const { area,nombre,telefono,username,email,superadmin,password } = req.body
+    const nuevoFuncionario= {
+        area:area,
+        nombre: nombre,
+        telefono:telefono,
+        username:username,
+        email: email,
+        superadmin:superadmin,
+        password:password
+    };
+    funcionarios.add(nuevoFuncionario)
+        .then((docRef) => {
+            res.json({ uid: docRef.id,msg:"Funcionario creado con exito",status:true })
+        })
+        .catch((error) => {
+            res.json({ uid: "-1",msg:"El funcionario no se puedo crear: " + error,status:false })
+        });
+}
+const editarFuncionario = async (req, res) => {
+    const { documentId,area,nombre,telefono,username,email,superadmin,password } = req.body
+    const nuevoFuncionario= {
+        area:area,
+        nombre: nombre,
+        telefono:telefono,
+        username:username,
+        email: email,
+        superadmin:superadmin,
+        password:password
+    };
+    funcionarios.doc(documentId).update(nuevoFuncionario)
+        .then((docRef) => {
+            res.json({ uid: docRef.id,msg:"Funcionario editado con exito",status:true })
+        })
+        .catch((error) => {
+            res.json({ uid: "-1",msg:"El funcionario no se puedo editar: " + error,status:false })
+        });
+}
 
+
+const eliminarFuncionario = async (req, res) => {
+    const { documentId} = req.body
+    funcionarios.doc(documentId).delete()
+        .then((docRef) => {
+            res.json({ uid: docRef.id,msg:"Funcionario eliminado con exito",status:true })
+        })
+        .catch((error) => {
+            res.json({ uid: "-1",msg:"El funcionario no se puedo eliminar: " + error,status:false })
+        });
+}
 module.exports = {
     addFuncionario,
     loginFuncionario,
     getFuncionario,
-    getFuncionarios
+    getFuncionarios,
+    addFuncionario1,
+    editarFuncionario,
+    eliminarFuncionario
 }

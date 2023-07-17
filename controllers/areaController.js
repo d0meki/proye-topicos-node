@@ -4,6 +4,13 @@ const { admin } = require('../config/firebase-config')
 var db = admin.firestore();
 var areas = db.collection("areas");
 
+const getArea = async (req, res) => {
+    const id = req.params.id;
+    // const { documentId } = req.body;
+    const snapshot = await areas.doc(id).get();
+    res.json(snapshot.data());
+}
+
 const getAreas = async (req, res) => {
     try {
         const snapshot = await areas.get();
@@ -68,5 +75,6 @@ module.exports = {
     getAreas,
     addArea,
     editarArea,
-    eliminarArea
+    eliminarArea,
+    getArea
 }
