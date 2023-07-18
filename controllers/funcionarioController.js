@@ -58,14 +58,14 @@ const addFuncionario = async (req, res) => {
     })
 }
 const addFuncionario1 = async (req, res) => {
-    const { area,nombre,telefono,username,email,superadmin,password } = req.body
+    const { area,nombre,telefono,username,email,password } = req.body
     const nuevoFuncionario= {
         area:area,
         nombre: nombre,
         telefono:telefono,
         username:username,
         email: email,
-        superadmin:superadmin,
+        superadmin:false,
         password:password
     };
     funcionarios.add(nuevoFuncionario)
@@ -77,14 +77,14 @@ const addFuncionario1 = async (req, res) => {
         });
 }
 const editarFuncionario = async (req, res) => {
-    const { documentId,area,nombre,telefono,username,email,superadmin,password } = req.body
+    const { documentId,area,nombre,telefono,username,email,password } = req.body
     const nuevoFuncionario= {
         area:area,
         nombre: nombre,
         telefono:telefono,
         username:username,
         email: email,
-        superadmin:superadmin,
+        superadmin:false,
         password:password
     };
     funcionarios.doc(documentId).update(nuevoFuncionario)
