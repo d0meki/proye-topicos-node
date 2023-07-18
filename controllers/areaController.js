@@ -32,7 +32,8 @@ const addArea = async (req, res) => {
     const nuevaArea = {
         id: Math.random() * (1000 - 100) + 100,
         nombre: nombre,
-        descripcion: descripcion
+        descripcion: descripcion,
+        categorias:[]
     };
     areas.add(nuevaArea)
         .then((docRef) => {
@@ -71,10 +72,36 @@ const eliminarArea = async (req, res) => {
             res.json({ uid: "-1",msg:"Area no se puedo eliminar: " + error,status:false })
         });
 }
+
+const addCategoriaAlArea = async (req, res) => {
+    const { documentId, categoria } = req.body;
+  
+    try {
+      const areaRef = areas.doc(documentId);
+      const areaDoc = await areaRef.get();
+  
+      if (!areaDoc.exists) {
+        return res.json({ msg: "El área no existe", status: false });
+      }
+  
+      const areaData = areaDoc.data();
+      const nuevasCategorias = [...areaData.categorias, categoria];
+  
+      await areaRef.update({ categorias: nuevasCategorias });
+  
+      return res.json({ msg: "Categoría agregada con éxito", status: true });
+    } catch (error) {
+      console.error("Error al agregar la categoría al área:", error);
+      return res.json({ msg: "Error al agregar la categoría al área", status: false });
+    }
+  };
+  
+  
 module.exports = {
     getAreas,
     addArea,
     editarArea,
     eliminarArea,
-    getArea
+    getArea,
+    addCategoriaAlArea
 }
