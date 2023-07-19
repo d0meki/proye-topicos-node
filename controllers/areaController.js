@@ -27,6 +27,11 @@ const getAreas = async (req, res) => {
     }
 }
 
+const getCategoriasArea = async (req, res)=>{
+    const {area} = req.body
+    const snapshot = await areas.where('nombre', '==', area).get();
+    res.json(snapshot.docs[0].data())
+}
 const addArea = async (req, res) => {
     const { nombre, descripcion } = req.body
     const nuevaArea = {
@@ -103,5 +108,6 @@ module.exports = {
     editarArea,
     eliminarArea,
     getArea,
-    addCategoriaAlArea
+    addCategoriaAlArea,
+    getCategoriasArea
 }

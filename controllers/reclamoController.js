@@ -31,7 +31,7 @@ const enviarMail = async (req, res) => {
 
 const getReclamos = async (req, res) => {
     const area = req.params.area;
-    const snapshot = await reclamos.where('categoria', '==', area).orderBy('fecha', 'desc').get();
+    const snapshot = await reclamos.where('categoria', 'in', area.categorias).orderBy('fecha', 'desc').get();
     const listaReclamos = [];
     snapshot.docs.map((doc) => {
         const datos = doc.data();
@@ -56,9 +56,24 @@ const getReclamoPara = async (req, res) => {
     res.json(snapshot.data());
 }
 
+const getReclamosArea = async (req, res) => {
+    const {categorias} = req.body;
+    console.log(categorias);
+    const snapshot = await reclamos.where('categoria', 'in', categorias).orderBy('fecha', 'desc').get();
+    const listaReclamos = [];
+    snapshot.docs.map((doc) => {
+        const datos = doc.data();
+        const id = doc.id;
+        const reclamo = { id, ...datos };
+        listaReclamos.push(reclamo);
+    })
+    res.json(listaReclamos)
+    // res.json(area)
+}
 const getReclamoPorEstado = async (req, res) => {
-    const { estado, area } = req.body;
-    const snapshot = await reclamos.where('estado', '==', estado).where('categoria', '==', area).get();
+    //const estado= req.body;
+    const {categorias,estado}= req.body;
+    const snapshot = await reclamos.where('estado', '==', estado).where('categoria', 'in', categorias).get();
     const listaReclamos = [];
     snapshot.docs.map((doc) => {
         const datos = doc.data();
@@ -69,10 +84,10 @@ const getReclamoPorEstado = async (req, res) => {
     res.json(listaReclamos)
 }
 const getReclamoPorFecha = async (req, res) => {
-    const { fechaIni, fechaFin, area } = req.body;
+    const { fechaIni, fechaFin, categorias } = req.body;
     const ini = admin.firestore.Timestamp.fromDate(new Date(fechaIni))
     const fin = admin.firestore.Timestamp.fromDate(new Date(fechaFin))
-    const snapshot = await reclamos.where('categoria', '==', area).where('fecha', '>=', ini).where('fecha', '<=', fin).get();
+    const snapshot = await reclamos.where('categoria', 'in', categorias).where('fecha', '>=', ini).where('fecha', '<=', fin).get();
     const listaReclamos = [];
     snapshot.docs.map((doc) => {
         const datos = doc.data();
@@ -178,5 +193,6 @@ module.exports = {
     cambiarArea,
     enviarMail,
     getReclamoPara,
-    cambiarComentario
+    cambiarComentario,
+    getReclamosArea
 }
